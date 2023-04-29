@@ -1,0 +1,238 @@
+<html>
+<head>
+</head>
+<canvas id="canvas"></canvas>
+<script>
+    //level maker vars
+    log_list = []
+    alert("This is the level maker version of the platformer game. The controls are logged in the console; to see the console press CTRL + SHIFT + J.(You might need to click on the game window to move the player again.) If the console is disabled (usually on school chromebooks) press 'y'.")
+    function schoollog(text){log_list.push(text);console.log(text);}
+
+    schoollog("Press 4 for changing platform 0's(the goal platform) coordinates.")
+    schoollog("Press 5 for changing platform 1's coordinates.")
+    schoollog("Press 6 for changing platform 2's coordinates.")
+    schoollog("Press 7 for changing platform 3's coordinates.")
+    schoollog("Press 8 for changing platform 4's coordinates.")
+    schoollog("Press 9 for changing the player's starting and respawn coordinates.")
+    schoollog("Press = to show a alert box with the code to copy.")
+    schoollog("Press the arrow keys to move the player/selector.")
+    const plat_code = []
+    var temp_code = ""
+    var temp_concat = ""
+    var temp_content = ""
+    var up
+    var down
+    var user_input
+    var user_num
+    //normal vars
+    var respawn_x = 200
+    var respawn_y = 200
+    var jump_num = 0
+    var lvl = 1
+    // The attributes of the player.
+    var player = {
+        x: 200,
+        y: 200,
+        x_v: 0,
+        y_v: 0,
+        jump : true,
+        height: 20,
+        width: 20
+        };
+    // The status of the arrow keys
+    var keys = {
+        right: false,
+        left: false,
+        up: false,
+        };
+    // The friction and gravity to show realistic movements    
+    var gravity = 0;
+    var friction = 0.7;
+    // The number of platforms
+    var num = 8;
+    // The platforms
+    var platforms = [];
+    // Function to render the canvas
+    function rendercanvas(){
+        ctx.fillStyle = "#F0F8FF";
+        ctx.fillRect(0, 0, 970, 520);
+    }
+    // Function to render the player
+    function renderplayer(){
+        ctx.fillStyle = "#F08080";
+        ctx.fillRect((player.x)-20, (player.y)-20, player.width, player.height);
+        }
+    // Function to create platforms
+    var x_num
+    var w_num
+    var y_float = player.y
+    function createplat(){
+        for(i = 0; i < num; i++) {
+            x_num = 0 + 20 * i
+            w_num = 110
+            if(lvl == 1){
+            if(i == 3){x_num = 150}}
+            if(i == 0){w_num = 50}
+            platforms.push(
+                {
+                x: x_num,
+                y: 200 + i * 20,
+                width: w_num,
+                height: 15
+                }
+            );
+        }
+        }
+    // Function to render platforms
+    function renderplat(){
+        var y_float = player.y
+        ctx.fillStyle = "#24fc03";
+        ctx.fillRect(platforms[0].x, platforms[0].y, platforms[0].width, platforms[0].height);
+        ctx.fillStyle = "#45597E";
+        ctx.fillRect(platforms[1].x, platforms[1].y, platforms[1].width,platforms[1]. height);
+        ctx.fillRect(platforms[2].x, platforms[2].y, platforms[2].width,platforms[2]. height);
+        ctx.fillRect(platforms[3].x, platforms[3].y, platforms[3].width,platforms[3]. height);
+        ctx.fillRect(platforms[4].x, platforms[4].y, platforms[4].width,platforms[4]. height);
+        ctx.fillRect(platforms[5].x, platforms[5].y, platforms[5].width,platforms[5]. height);
+        ctx.fillRect(platforms[6].x, platforms[6].y, platforms[6].width,platforms[6]. height);
+        ctx.fillRect(platforms[7].x, platforms[7].y, platforms[7].width,platforms[7]. height);
+    }
+    // This function will be called when a key on the keyboard is pressed
+    function keydown(e) {
+        // 37 is the code for the left arrow key
+        if(e.keyCode == 37) {
+            player.x -= 10
+        }
+        // 37 is the code for the up arrow key
+        if(e.keyCode == 38) {
+            // player.jump == false
+            //true for inf jump
+            if(player.jump == false) {
+                player.y_v = -10;
+            }
+        }
+        // 39 is the code for the right arrow key
+        if(e.keyCode == 39) {
+            player.x += 10
+        }
+        if(e.keyCode == 50){
+            alert(player.x)
+        }
+        if(e.keyCode == 51){
+            alert(player.x)
+            alert(player.y)
+            alert(plat_code[0])
+        }
+        //if(e.keyCode == 16) {
+        //    player.y_v = -10
+        //}
+        if(e.keyCode == 52){
+            platforms[0].x = player.x
+            platforms[0].y = player.y
+            plat_code[0] = "platforms[0].x = " + platforms[0].x + ";platforms[0].y = " + platforms[0].y + ";"
+            alert(plat_code[0])
+        }
+        if(e.keyCode == 53){
+            platforms[1].x = player.x
+            platforms[1].y = player.y
+            plat_code[1] = "platforms[1].x = " + platforms[1].x + ";platforms[1].y = " + platforms[1].y + ";"
+            alert(plat_code[1])
+        }
+        if(e.keyCode == 54){
+            platforms[2].x = player.x
+            platforms[2].y = player.y
+            plat_code[2] = "platforms[2].x = " + platforms[2].x + ";platforms[2].y = " + platforms[2].y + ";"
+            alert(plat_code[2])
+        }
+        if(e.keyCode == 55){
+            platforms[3].x = player.x
+            platforms[3].y = player.y
+            plat_code[3] = "platforms[3].x = " + platforms[3].x + ";platforms[3].y = " + platforms[3].y + ";"
+            alert(plat_code[3])
+        }
+        if(e.keyCode == 56){
+            platforms[4].x = player.x
+            platforms[4].y = player.y
+            plat_code[4] = "platforms[4].x = " + platforms[4].x + ";platforms[4].y = " + platforms[4].y + ";"
+            alert(plat_code[4])
+        }
+        if(e.keyCode == 57){
+            plat_code[8] = "respawn_x = " + player.x + ";respawn_y = " + player.y + ";player.x = " + player.x + ";player.y = " + player.y + ";"
+            alert(plat_code[8])
+        }
+        if(e.keyCode == 187){
+            //shows the user the code
+            alert(plat_code.join(''))
+        }
+        if(e.keyCode == 48){
+            user_input = prompt("Platform Number: ")
+            if(!isNaN(user_input)){user_num = parseInt(user_input);
+                platforms[user_num].x = player.x
+                platforms[user_num].y = player.y
+                plat_code[user_num] = "platforms[" + user_input + "].x = " + platforms[user_num].x + ";platforms[" + user_input + "].y = " + platforms[user_num].y + ";"
+                alert(plat_code[user_num])
+            };
+            
+        }
+        if(e.keyCode == 84){eval(prompt("code to run:"))}
+        if(e.keyCode == 89){alert(log_list.join('\n'));}
+    }
+    // This function is called when the pressed key is released
+    function keyup(e) {
+        if(e.keyCode == 37) {
+            keys.left = false;
+        }
+        if(e.keyCode == 38) {
+            
+            player.y -= 10
+        }
+        if(e.keyCode == 40) {
+            player.y += 10
+        }
+        if(e.keyCode == 39) {
+            keys.right = false;
+        }
+        if(e.keyCode == 49){
+            alert(player.y)
+        }
+        
+    } 
+    function loop() {
+        
+        // If the player is not jumping apply the effect of frictiom
+        if(player.jump == false) {
+            player.x_v *= friction;
+        } else {
+            // If the player is in the air then apply the effect of gravity
+            player.y_v += gravity;
+        }
+        player.jump = true;
+        // If the left key is pressed increase the relevant horizontal velocity
+        if(keys.left) {
+            player.x_v = -2.5;
+        }
+        if(keys.right) {
+            player.x_v = 2.5;
+        }
+        // Updating the y and x coordinates of the player
+        player.y += player.y_v;
+        player.x += player.x_v;
+        
+        // Rendering the canvas, the player and the platforms
+        rendercanvas();
+        renderplayer();
+        renderplat();
+    }
+    canvas=document.getElementById("canvas");
+    ctx=canvas.getContext("2d");
+    ctx.canvas.height = 520;
+    ctx.canvas.width = 970;
+    createplat();
+    // Adding the event listeners
+    document.addEventListener("keydown",keydown);
+    document.addEventListener("keyup",keyup);
+    setInterval(loop,22);
+</script>
+<body>
+</body>
+</html>
