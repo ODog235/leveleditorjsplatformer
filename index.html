@@ -2,12 +2,62 @@
 <head>
 </head>
 <canvas id="canvas"></canvas>
+<p></p>
+<button onclick="change_level()">Change level</button>
+<button onclick="change_varibles()">Change varibles</button>
+<button onclick="make_txt()">Save as .txt</button>
 <script>
-    //level maker vars
+    var name
+    function make_txt(){
+        name = prompt("Give it a name!")
+        change_level("download")
+        alert(main_codelist)
+        download(name + ".txt", "@$" + main_codelist.join(''))
+    }
+    function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+//download("test.txt", "hello world!")    
+//level maker vars
+var whoa = ""
+var whoa2
+var user_num2
+var user_num3
+    var main_codelist = []
     log_list = []
     alert("This is the level maker version of the platformer game. The controls are logged in the console; to see the console press CTRL + SHIFT + J.(You might need to click on the game window to move the player again.) If the console is disabled (usually on school chromebooks) press 'y'.")
     function schoollog(text){log_list.push(text);console.log(text);}
-
+    function change_level(lvl_to_change){
+        if(lvl == 1){main_codelist[0] = plat_code.join('');
+        plat_code = []
+        alert(plat_code)
+        alert(main_codelist)
+        if(lvl_to_change != "download"){lvl_to_change = prompt("What level to change to? 1-6");}
+        lvl = lvl_to_change;
+        
+    }else{if(lvl_to_change != "download"){lvl = lvl_to_change;main_codelist[lvl] = "lvl_" + String(lvl) + "_code = " + plat_code;plat_code = [];}
+    }
+    if(lvl_to_change == "download"){main_codelist[lvl]= "lvl_" + String(lvl) + "_code = " + plat_code.join('');plat_code = [];alert(main_codelist.join(''))}
+    }
+    function change_varibles(){
+        user_num3 = prompt("What should the gravity be? The default if 0.6")
+        if(isNaN(user_num3)){alert("This is not a number. Using the default.");user_num3 = 0.6;}
+        
+        user_num2 = prompt("What should the friction  be? The default if 0.7")
+        if(isNaN(user_num2)){alert("This is not a number. Using the default.");user_num2 = 0.7;}
+        alert(user_num2)
+        main_codelist[8] = "friction = " + user_num2 + ";gravity = " + user_num3 + ";"
+        
+    }
     schoollog("Press 4 for changing platform 0's(the goal platform) coordinates.")
     schoollog("Press 5 for changing platform 1's coordinates.")
     schoollog("Press 6 for changing platform 2's coordinates.")
@@ -16,7 +66,7 @@
     schoollog("Press 9 for changing the player's starting and respawn coordinates.")
     schoollog("Press = to show a alert box with the code to copy.")
     schoollog("Press the arrow keys to move the player/selector.")
-    const plat_code = []
+    var plat_code = []
     var temp_code = ""
     var temp_concat = ""
     var temp_content = ""
